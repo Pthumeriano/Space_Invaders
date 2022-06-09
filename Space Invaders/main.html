@@ -40,6 +40,9 @@ onkeydown = moverCanhao; // Define função chamada ao se pressionar uma tecla
 
 var pontuacao = 0;
 
+var qtdAliens = 55;
+var vidas = 3;
+
 iniciar(); // Chama função inicial do jogo
 
 
@@ -58,7 +61,7 @@ function iniciar() {
     carregarImagens();
 
 	setInterval("moverAliens()", intervalo);
-    setInterval("alienAtingido()", 6);
+    setInterval("alienAtingido()", qtdAliens);
 
 }    
 
@@ -159,9 +162,19 @@ function alienAtingido(){
                 aliensRestantes[i].foiAtingido = true;
                 c.fillRect(impactoLaserX, laserY, 6, 19);
                 laserY = 0;
-                pontuacao += 10;
-                c.fillText('AAAAA',20,20)
+
+                if(aliensRestantes[i].indice == 0 || aliensRestantes[i] == 1){
+                    pontuacao += 10;
+                }else if(aliensRestantes[i].indice == 2 || aliensRestantes[i] == 3){
+                    pontuacao += 20;
+                }else{
+                    pontuacao += 40;
+                }
+                qtdAliens--;
             }     
+        }
+        if(qtdAliens == 0){
+            fimDeJogo();
         }
     }
 }
@@ -180,9 +193,11 @@ function fimDeJogo(){
 	c.fillRect(0, 0, C_LARGURA, C_ALTURA);
     
     c.textAlign = "center";
-    c.font = "16px Arial";
+    c.font = "16px Poppins";
     c.fillStyle = "white";
     c.fillText("Fim de Jogo", C_LARGURA/2, C_ALTURA/2);
+    c.fillText('Pontuacao: ' + pontuacao, (C_LARGURA/2), (C_ALTURA/2)+50);
+
 
     onkeydown = null;
 }
